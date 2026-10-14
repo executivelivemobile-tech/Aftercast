@@ -1,6 +1,6 @@
-# EffectCraft — instructions for agents
+# Aftercast — instructions for agents
 
-EffectCraft is a clean-room, open-source, pure-Rust motion graphics and visual effects compositor targeting Adobe After Effects parity (and beyond). Native on macOS, Windows, Linux; web via WASM. Sibling of `../photocraft` (Photoshop), `../pdfcraft` (Acrobat), `../vectorcraft` (Illustrator), `../filmcraft` (Premiere), `../lightcraft` (Lightroom) and `../designcraft` (InDesign), with the same conventions.
+Aftercast is a clean-room, open-source, pure-Rust motion graphics and visual effects compositor targeting Adobe After Effects parity (and beyond). Native on macOS, Windows, Linux; web via WASM. It is an independent project based on [EffectCraft](https://github.com/storytold/effectcraft) 0.10.0 by the ArtCraft team, and keeps its conventions. Crates, binaries, file formats and data folders still carry the EffectCraft name (`effectcraft-*`, `.ecproj`, `EffectCraft Auto-Save`) until they are renamed with a migration; only the name people see is Aftercast (`crates/engine/src/links.rs`).
 
 ## Start every session here
 `plan/` is maintainer-local (gitignored). Public equivalents: [`ROADMAP.md`](ROADMAP.md), [`docs/`](docs/).
@@ -19,7 +19,7 @@ EffectCraft is a clean-room, open-source, pure-Rust motion graphics and visual e
 - **Property tree:** everything animatable is a `Property` in the layer's `PropGroup` tree, addressed by paths (`transform/position`, `effects/#1/blurriness`, `@uid`).
 - **Everything is a command** (`crates/engine`): id, label, menu path, shortcut, params, enabled(), run(). UI, CLI, control channel and MCP dispatch by id.
 - **Everything is agent-drivable:** every interactive widget registers an automation id; UI state is serde.
-- **Community links** (Help menu, About, header Discord button): https://discord.gg/artcraft, https://getartcraft.com, https://getartcraft.com/apps/effectcraft, https://github.com/storytold/effectcraft.
+- **Project links** (Help menu, About, Home screen, header): https://github.com/executivelivemobile-tech/Aftercast and its issues, from `crates/engine/src/links.rs`. No ArtCraft marks or links (Discord, getartcraft.com): the brand is Aftercast's own (`docs/brand/`, AGENTS.md §1.8).
 - **Quality gates** before every commit: `cargo xtask ci` (fmt, clippy -D warnings, tests, layers, assets, wasm).
 - **Commits:** one task id per commit (`M6.3: trim paths`). Only green states.
 

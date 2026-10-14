@@ -40,7 +40,7 @@ fn demo_layer_cache_is_transparent() {
     }
     assert!(s.layer_cache.stats().hits > 0);
     // Edit the title's glow through the command layer, then scrub again.
-    let title = s.project.comp(cid).unwrap().layers.iter().find(|l| l.name == "EFFECTCRAFT").map(|l| l.id.0).unwrap();
+    let title = s.project.comp(cid).unwrap().layers.iter().find(|l| l.name == "AFTERCAST").map(|l| l.id.0).unwrap();
     s.execute("prop.set", json!({"layer": title, "path": "effects/#1/radius", "value": 5.0})).unwrap();
     for t in [3.0, 0.5] {
         check(&s, t);
@@ -379,10 +379,14 @@ fn save_and_open_roundtrip() {
 #[test]
 fn help_links_emit_urls() {
     let mut s = Session::default();
-    let r = s.execute("help.discord", json!({})).unwrap();
-    assert_eq!(r["url"], "https://discord.gg/artcraft");
-    assert!(s.drain_events().iter().any(|e| matches!(e, crate::Event::OpenUrl(u) if u.contains("discord"))));
-    assert_eq!(s.execute("help.github", json!({})).unwrap()["url"], "https://github.com/storytold/effectcraft");
+    let r = s.execute("help.github", json!({})).unwrap();
+    assert_eq!(r["url"], "https://github.com/executivelivemobile-tech/Aftercast");
+    assert!(s.drain_events().iter().any(|e| matches!(e, crate::Event::OpenUrl(u) if u == crate::links::GITHUB)));
+    assert_eq!(s.execute("help.reportIssue", json!({})).unwrap()["url"], "https://github.com/executivelivemobile-tech/Aftercast/issues");
+    // The ArtCraft community links went with the brand (Aftercast is independent of it).
+    for gone in ["help.discord", "help.website", "help.appPage", "help.sibling"] {
+        assert!(s.execute(gone, json!({})).is_err(), "{gone}");
+    }
 }
 
 #[test]

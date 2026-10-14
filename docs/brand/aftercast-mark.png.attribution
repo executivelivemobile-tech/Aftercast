@@ -1,0 +1,8 @@
+asset:        aftercast-mark.png
+title:        Aftercast logo (golden phoenix), square app mark
+author:       Aftercast owners (executivelivemobile-tech)
+source:       original work (first-party Aftercast brand asset supplied by the Aftercast owners)
+license:      LicenseRef-Aftercast-Trademark — the Aftercast name and logo are trademarks of the Aftercast owners, not open source and not covered by the project's MIT OR Apache-2.0 license, under docs/brand/LICENSE-brand.txt.
+license-file: docs/brand/LICENSE-brand.txt
+added:        2026-10-14 by Claude (agent) for executivelivemobile-tech
+notes:        The supplied logo trimmed to its opaque bounds, scaled to 92% of 512 px (Lanczos on premultiplied alpha) and centred on a transparent 512 × 512 square, unmodified otherwise. Drawn in the Tools bar and the About dialog (crates/ui-egui/src/header.rs). Forks and modified versions must remove it (docs/brand/LICENSE-brand.txt).

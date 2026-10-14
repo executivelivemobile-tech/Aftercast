@@ -1,11 +1,15 @@
-# EffectCraft — rules for agents and contributors
+# Aftercast — rules for agents and contributors
+
+Aftercast is an independent project based on [EffectCraft](https://github.com/storytold/effectcraft)
+by the ArtCraft team; it is not made or endorsed by them. Code, crates and file formats still carry the
+EffectCraft name (`effectcraft-*`, `.ecproj`) until they are renamed.
 
 These rules apply to every human and AI contributor. `CLAUDE.md` holds the working instructions; this
 file holds the rules that must never be broken. When the two disagree, this file wins.
 
 ## Never crash
 
-People trust EffectCraft with hours of work. A malformed project, PSD, SVG, Lottie or media file, a bad
+People trust Aftercast with hours of work. A malformed project, PSD, SVG, Lottie or media file, a bad
 expression or script, a broken plug-in, a bad control-channel or MCP argument, a corrupt preferences file
 or a full disk must produce an error the user (or agent) can act on, never a crash and never lost work.
 **This rule outranks feature work:** don't ship a feature by adding a panic path, and fix a crash before
@@ -68,7 +72,7 @@ reproduce an image (for example, point lists traced from someone else's icon).
    ```
    Also add one line for the asset to [`ATTRIBUTION.md`](ATTRIBUTION.md). `cargo xtask assets` (part of
    `cargo xtask ci`) fails if any asset lacks a sidecar or index entry.
-4. **Screenshots** in the repo may show only EffectCraft (or other open projects), with media we generated
+4. **Screenshots** in the repo may show only Aftercast (or other open projects), with media we generated
    or media that is itself openly licensed. Never commit screenshots of Adobe products.
 5. **Local reference material stays local.** After Effects reference screenshots and notes live only in
    `plan/aftereffects/` (gitignored). They must never be committed, bundled, embedded, traced or shipped.
@@ -76,12 +80,12 @@ reproduce an image (for example, point lists traced from someone else's icon).
    `crates/engine/src/demo.rs`, generators in `crates/effects`) are original work under the project licence
    and are listed in `ATTRIBUTION.md`.
 7. **When in doubt, leave it out** and draw or generate it yourself.
-8. **The one exception: first-party ArtCraft brand marks.** The ArtCraft name and logos in `docs/brand/`
-   are trademarks of the ArtCraft Team, not open source, usable only unmodified and only in the context of
-   EffectCraft under `docs/brand/LICENSE-brand.txt` (forks and modified versions must remove them). They still
-   need a sidecar and an `ATTRIBUTION.md` row (licence `LicenseRef-ArtCraft-Trademark`). No other
-   non-open asset is allowed, and this exception never covers third-party marks (Adobe, Discord, GitHub
-   and other logos stay out; draw a generic icon instead).
+8. **The one exception: first-party Aftercast brand marks.** The Aftercast name and logos in `docs/brand/`
+   are trademarks of the Aftercast owners, not open source, usable only unmodified and only to refer to
+   Aftercast under `docs/brand/LICENSE-brand.txt` (forks and modified versions must remove them). They still
+   need a sidecar and an `ATTRIBUTION.md` row (licence `LicenseRef-Aftercast-Trademark`). No other
+   non-open asset is allowed, and this exception never covers third-party marks (Adobe, ArtCraft, Discord,
+   GitHub and other logos stay out; draw a generic icon instead).
 
 ## 2. Clean-room code
 

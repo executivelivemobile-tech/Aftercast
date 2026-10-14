@@ -1,0 +1,8 @@
+asset:        aftercast-logo.png
+title:        Aftercast logo (golden phoenix), full artwork on a transparent background
+author:       Aftercast owners (executivelivemobile-tech)
+source:       original work (first-party Aftercast brand asset supplied by the Aftercast owners)
+license:      LicenseRef-Aftercast-Trademark — the Aftercast name and logo are trademarks of the Aftercast owners, not open source and not covered by the project's MIT OR Apache-2.0 license, under docs/brand/LICENSE-brand.txt.
+license-file: docs/brand/LICENSE-brand.txt
+added:        2026-10-14 by Claude (agent) for executivelivemobile-tech
+notes:        Supplied by the owners as a 1793 × 2000 WebP with alpha; trimmed to its opaque bounds and scaled to 1000 px tall (Lanczos on premultiplied alpha) for the README and brand use. The one exception to the open-licence rule (AGENTS.md §1.8). Forks and modified versions must remove it (docs/brand/LICENSE-brand.txt).
