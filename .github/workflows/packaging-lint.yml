@@ -3,12 +3,9 @@
 # Windows MSI install test with stub binaries (install folder, upgrade, repair, uninstall).
 name: Packaging lint
 
+# Aftercast: this workflow comes from EffectCraft and calls the ArtCraft organization's shared
+# workflows, which package EffectCraft. It runs only by hand until Aftercast's packaging is its own.
 on:
-  push:
-    branches: [main, release]
-    paths: [".github/workflows/**", "packaging/**", "assets/app-icon/**"]
-  pull_request:
-    paths: [".github/workflows/**", "packaging/**", "assets/app-icon/**"]
   workflow_dispatch:
 
 permissions:

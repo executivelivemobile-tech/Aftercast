@@ -1,0 +1,66 @@
+# The quality gate on every push and pull request: `cargo xtask ci` (fmt, clippy -D warnings,
+# the workspace tests, layering, asset attribution and the wasm32 build), the same command every
+# commit must pass locally (CONTRIBUTING.md). Linux x86_64 on stable Rust. The runner has no GPU:
+# the tests that need a graphics adapter skip themselves, as on any machine without one. (Mesa's
+# software Vulkan driver, lavapipe, is not a way round that yet: the GPU compositor's tests crash
+# inside it.)
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+  CARGO_INCREMENTAL: "0"
+  RUST_BACKTRACE: "1"
+  # The gate builds the tests in release. Thin LTO and one codegen unit make the shipped binaries
+  # faster but only slow the gate down; the code checked is the same.
+  CARGO_PROFILE_RELEASE_LTO: "off"
+  CARGO_PROFILE_RELEASE_CODEGEN_UNITS: "16"
+
+jobs:
+  gate:
+    name: cargo xtask ci
+    # A pull request from a branch of this repository is already checked by its push; run the
+    # ones from forks here.
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    steps:
+      - name: Free disk space
+        # The release test binaries of the whole workspace need more room than the runner leaves.
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL /usr/local/share/boost
+          df -h /
+
+      - uses: actions/checkout@v4
+
+      - name: System libraries
+        # ALSA headers for cpal (audio output).
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libasound2-dev
+
+      - name: Rust toolchain
+        run: |
+          rustup toolchain install stable --profile minimal --component rustfmt,clippy --target wasm32-unknown-unknown
+          rustup default stable
+          rustc --version
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          # Only the default branch saves the cache; branches restore it.
+          save-if: ${{ github.ref == 'refs/heads/main' }}
+
+      - name: cargo xtask ci
+        run: cargo xtask ci

@@ -12,6 +12,17 @@ use egui_kittest::Harness;
 use egui_kittest::kittest::Queryable;
 use serde_json::json;
 
+/// Whether egui_kittest's wgpu renderer can start: it needs a graphics adapter, which a machine
+/// without a GPU (the Linux CI runner) doesn't have. Tests that read rendered pixels skip then,
+/// like the other GPU tests. Lists the adapters the way egui_kittest picks from.
+fn renderer_available() -> bool {
+    let setup = egui_kittest::wgpu::default_wgpu_setup();
+    let eframe::egui_wgpu::WgpuSetup::CreateNew(new) = &setup else { return true };
+    let backends = new.instance_descriptor.backends;
+    let instance = pollster::block_on(setup.new_instance());
+    !pollster::block_on(instance.enumerate_adapters(backends)).is_empty()
+}
+
 fn app() -> EffectcraftApp {
     let mut s = Session::default();
     s.execute("comp.new", json!({"name": "View", "width": 640, "height": 360, "duration": 4})).unwrap();
@@ -477,6 +488,10 @@ fn fill_rgb(h: &Harness<'_, EffectcraftApp>) -> [u8; 3] {
 /// invisible, and in the tool's own form — only the Rectangle fills the corner of the box.
 #[test]
 fn shape_drag_ghost_shows_the_tools_own_shape_while_dragging() {
+    if !renderer_available() {
+        eprintln!("no graphics adapter: skipping");
+        return;
+    }
     let (from, to) = ([140.0, 100.0], [400.0, 300.0]);
     let centre = [270.0, 200.0];
     // 6 comp px inside the box's top-left corner: inside a rectangle, outside every other kind.
@@ -509,6 +524,10 @@ fn shape_drag_ghost_shows_the_tools_own_shape_while_dragging() {
 /// lie: Shift squares the box and Ctrl/Cmd draws it from the press point (as in After Effects), both live.
 #[test]
 fn shape_drag_ghost_normalises_the_same_way_as_the_release() {
+    if !renderer_available() {
+        eprintln!("no graphics adapter: skipping");
+        return;
+    }
     let from = [140.0f64, 100.0];
     let to = [400.0f64, 260.0];
     // (mods, centre, size): Shift squares the box from its top-left, Ctrl/Cmd centres it on the press.
@@ -547,6 +566,10 @@ fn shape_drag_ghost_normalises_the_same_way_as_the_release() {
 /// and not painted with the Fill, where a shape drawn into the selected shape layer is.
 #[test]
 fn shape_drag_ghost_shows_where_the_shape_will_land() {
+    if !renderer_available() {
+        eprintln!("no graphics adapter: skipping");
+        return;
+    }
     let (from, to) = ([140.0, 100.0], [400.0, 300.0]);
     let centre = [270.0, 200.0];
 
@@ -581,6 +604,10 @@ fn shape_drag_ghost_shows_where_the_shape_will_land() {
 /// for it would freeze the viewer on the last completed frame for the whole drag.
 #[test]
 fn a_layer_drag_moves_the_picture_while_the_button_is_down() {
+    if !renderer_available() {
+        eprintln!("no graphics adapter: skipping");
+        return;
+    }
     let mut h = harness();
     let box_ = h.state().session.active_comp().unwrap().layers.iter().find(|l| l.name == "Box").unwrap().id;
     h.state_mut().session.execute("layer.select", json!({"layers": [box_.0]})).unwrap();

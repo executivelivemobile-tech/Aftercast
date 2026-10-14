@@ -8,6 +8,17 @@ use egui::{Event, Rect, pos2, vec2};
 use egui_kittest::Harness;
 use serde_json::json;
 
+/// Whether egui_kittest's wgpu renderer can start: it needs a graphics adapter, which a machine
+/// without a GPU (the Linux CI runner) doesn't have. Tests that read rendered pixels skip then,
+/// like the other GPU tests. Lists the adapters the way egui_kittest picks from.
+fn renderer_available() -> bool {
+    let setup = egui_kittest::wgpu::default_wgpu_setup();
+    let eframe::egui_wgpu::WgpuSetup::CreateNew(new) = &setup else { return true };
+    let backends = new.instance_descriptor.backends;
+    let instance = pollster::block_on(setup.new_instance());
+    !pollster::block_on(instance.enumerate_adapters(backends)).is_empty()
+}
+
 fn harness() -> Harness<'static, EffectcraftApp> {
     let mut s = effectcraft_host::session();
     s.execute("comp.new", json!({"name": "Main", "width": 320, "height": 180, "duration": 4})).unwrap();
@@ -173,6 +184,10 @@ fn history_panel_jumps_between_branches() {
 /// onDraw fills of concave paths and real images (drawImage, image controls), rendered.
 #[test]
 fn on_draw_concave_fills_and_images_render() {
+    if !renderer_available() {
+        eprintln!("no graphics adapter: skipping");
+        return;
+    }
     let dir = std::env::temp_dir().join(format!("effectcraft-scriptui-img-{}", std::process::id()));
     std::fs::create_dir_all(&dir).unwrap();
     let png = dir.join("green.png");

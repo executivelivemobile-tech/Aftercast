@@ -29,6 +29,8 @@ cargo xtask ci                           # what every commit must pass
   input-derived values, and a regression test with every crash fix. See the "Never crash" section of
   [AGENTS.md](AGENTS.md).
 - **Tests with every change**, and green `cargo xtask ci` before every commit. One task per commit.
+  CI runs the same command on every push and pull request (`.github/workflows/ci.yml`; Linux
+  needs `libasound2-dev` and `rustup target add wasm32-unknown-unknown`).
 
 ## How to add…
 
