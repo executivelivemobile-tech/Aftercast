@@ -106,7 +106,7 @@ Ranked; detail in [docs/roadmap.md](docs/roadmap.md) and [docs/gaps.md](docs/gap
 
 | | Next | Hours |
 |---|---|---:|
-| 1 | Fix the open crash reports; run `cargo xtask ci` on every pull request (G3) | 15–30 |
+| 1 | Fix the open crash reports; GPU tests in CI (G3; `cargo xtask ci` runs on every push and pull request since 14 October) | 15–30 |
 | 2 | Fidelity harness against After Effects: rendered frames, a corpus case per P0/P1 feature (G1) | 60–100 |
 | 3 | Real-user reliability on Linux and Windows; the open mask, effect, text and 3D bugs (G2) | 100–190 |
 | 4 | `.aep` / `.aepx` import, after the owner's clean-room decision (G4) | 80–160 |
@@ -117,6 +117,12 @@ Come tell us what matters most to you on [Discord](https://discord.gg/artcraft).
 
 ## Progress log
 
+- 2026-10-14: CI: `.github/workflows/ci.yml` runs `cargo xtask ci` on every push and pull request
+  (Linux x86_64, stable, no GPU); the first run is green. The interface tests that read rendered
+  pixels skip without a graphics adapter, like the other GPU tests.
+- 2026-10-14: Aftercast becomes an independent project based on EffectCraft 0.10.0: its own name
+  and logo in the interface, the ArtCraft marks and community links removed, project links to
+  github.com/executivelivemobile-tech/Aftercast.
 - 2026-10-12: Roto Brush span edits report strokes outside a trimmed layer without panicking;
   strokes and undo history are preserved so restoring the timing allows the span edit again.
 - 2026-10-11: Ukrainian panels caught up with the Chinese catalogs. The 95 rows the panel
